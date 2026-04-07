@@ -1,0 +1,16 @@
+{
+  "id": "app218-resume-ai",
+  "name": "App218 Resume AI",
+  "tagline": "AI-powered hr solution",
+  "description": "AI-powered app218-resume-ai application built for Aurora Market. Modern, responsive design with SaaS monetization.",
+  "category": "hr",
+  "tags": ["ai", "hr"],
+  "url": "https://auroramarket.org/app218-resume-ai",
+  "demo": "https://21leahcimhtiek-oss.github.io/app218-resume-ai",
+  "repo": "https://github.com/21leahcimhtiek-oss/app218-resume-ai",
+  "stack": ["TypeScript", "Next.js", "React"],
+  "status": "mvp",
+  "version": "1.0.0",
+  "author": "Aurora Rayes LLC",
+  "license": "MIT"
+}
