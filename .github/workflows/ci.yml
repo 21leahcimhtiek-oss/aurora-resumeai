@@ -1,15 +1,48 @@
 name: CI
+
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+      STRIPE_SECRET_KEY: sk_test_placeholder
+      STRIPE_WEBHOOK_SECRET: whsec_test_placeholder
+      STRIPE_PRICE_PRO_MONTHLY: price_test_monthly_placeholder
+      STRIPE_PRICE_PRO_YEARLY: price_test_yearly_placeholder
+      OPENAI_API_KEY: sk-test-placeholder
+      DATABASE_URL: postgresql://user:password@localhost:5432/app
+      PAYMENTS_ENABLED: "false"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --legacy-peer-deps
+          else
+            npm install --legacy-peer-deps
+          fi
+      - name: Lint (when configured)
+        run: |
+          if [ -f .eslintrc ] || [ -f .eslintrc.json ] || [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f eslint.config.js ] || [ -f eslint.config.mjs ] || [ -f eslint.config.cjs ]; then
+            npm run lint --if-present
+          else
+            echo "No ESLint config found; skipping lint to avoid interactive Next.js setup."
+          fi
+      - name: Test (when present)
+        run: npm test --if-present
+      - name: Build
+        run: npm run build --if-present
+      - name: Check payment safety
+        run: |
+          ! grep -R "sk_live_\|pk_live_\|https://buy.stripe.com" . --exclude-dir=.git --exclude-dir=.github

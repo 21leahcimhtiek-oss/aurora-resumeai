@@ -2,9 +2,9 @@
   "bundles": [
     {
       "id": "aurora-market-bundle",
-      "name": "Aurora Market Bundle",
-      "description": "Complete Aurora Market application suite",
-      "apps": ["app218-resume-ai"],
+      "name": "Aurora Rayes Bundle",
+      "description": "Complete Aurora Rayes application suite",
+      "apps": ["aurora-resumeai"],
       "discount_percent": 20
     }
   ]
